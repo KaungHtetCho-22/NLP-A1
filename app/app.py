@@ -5,7 +5,7 @@ from utils import Skipgram, SkipgramNeg, Glove
 import torch.nn.functional as F
 
 # Load the data
-Data = pickle.load(open('/home/koala/NLP/NPL-A1/data/data.pkl', 'rb'))
+Data = pickle.load(open('data/data.pkl', 'rb'))
 vocab = Data['vocab']
 word2index = Data['word2index']
 voc_size = Data['voc_size']
@@ -13,18 +13,18 @@ embed_size = Data['emb_size']
 
 # Load the models
 skipgram = Skipgram(voc_size, embed_size)
-skipgram.load_state_dict(torch.load('/home/koala/NLP/NPL-A1/models/skipgram.pth', map_location=torch.device('cpu')))
+skipgram.load_state_dict(torch.load('models/skipgram.pth', map_location=torch.device('cpu')))
 skipgram.eval()
 
 skipgramNeg = SkipgramNeg(voc_size, embed_size)
-skipgramNeg.load_state_dict(torch.load('/home/koala/NLP/NPL-A1/models/skipgramNEG.pth', map_location=torch.device('cpu')))
+skipgramNeg.load_state_dict(torch.load('models/skipgramNEG.pth', map_location=torch.device('cpu')))
 skipgramNeg.eval()
 
 glove = Glove(voc_size, embed_size)
-glove.load_state_dict(torch.load('/home/koala/NLP/NPL-A1/models/GloVe.pth', map_location=torch.device('cpu')))
+glove.load_state_dict(torch.load('models/GloVe.pth', map_location=torch.device('cpu')))
 glove.eval()
 
-model_path = '/home/koala/NLP/NPL-A1/models/gensim.pkl'
+model_path = 'models/gensim.pkl'
 gensim = pickle.load(open(model_path, 'rb'))
 
 app = Flask(__name__, static_url_path='/static')
