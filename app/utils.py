@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 import pickle
 
-Data = pickle.load(open('/home/koala/NLP/NPL-A1/data/data.pkl', 'rb'))
+Data = pickle.load(open('./data/data.pkl', 'rb'))
 word2index = Data['word2index']
 
 class Skipgram(nn.Module):

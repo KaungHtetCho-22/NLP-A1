@@ -23,18 +23,25 @@
             <option value="glove">GloVe</option>
             <option value="gensim">gensim</option>
         </select>
-        <button onclick="getRelatedWords()" style="width: 100%; padding: 10px; margin-top: 10px;">Find Related Words</button>
+        <button id="findButton" onclick="getRelatedWords()" style="width: 100%; padding: 10px; margin-top: 10px;">Find Related Words</button>
         <div id="result" class="result"></div>
     </div>
 
     <script>
-        function getRelatedWords() {
-            var words = $('#words').val().trim(); // Trim whitespace from input value
+        $(document).ready(function() {
+            $('#words').keypress(function(event) {
+                if (event.keyCode === 13) {
+                    $('#findButton').click();
+                }
+            });
+        });
 
-            // Check if the input is empty
+        function getRelatedWords() {
+            var words = $('#words').val().trim();
+
             if (words.length === 0) {
-                $('#result').html('<p>Please enter a word or words.</p>'); // Inform the user
-                return; // Exit the function if the input is empty
+                $('#result').html('<p>Please enter a word or words.</p>');
+                return;
             }
 
             var wordArray = words.split(' ');
