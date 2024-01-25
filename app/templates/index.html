@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Similarity Checker</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: auto; }
+        .result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>Find top 10 similar words</h1>
+        <p>Enter a word or words and select a model to find similar words.</p>
+    </div>
+    <div class="container">
+        <input type="text" id="words" placeholder="Enter words" style="width: 96%; padding: 10px;">
+        <select id="model" style="width: 100%; padding: 10px; margin-top: 10px;">
+            <option value="skipgram">Skipgram</option>
+            <option value="skipgramneg">SkipgramNeg</option>
+            <option value="glove">GloVe</option>
+            <option value="gensim">gensim</option>
+        </select>
+        <button onclick="getRelatedWords()" style="width: 100%; padding: 10px; margin-top: 10px;">Find Related Words</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function getRelatedWords() {
+            var words = $('#words').val().trim(); // Trim whitespace from input value
+
+            // Check if the input is empty
+            if (words.length === 0) {
+                $('#result').html('<p>Please enter a word or words.</p>'); // Inform the user
+                return; // Exit the function if the input is empty
+            }
+
+            var wordArray = words.split(' ');
+            var model = $('#model').val();
+
+            $.ajax({
+                url: '/similar_words/' + model,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ words: wordArray }),
+                success: function(data) {
+                    var listHtml = '<h3>Similar Words:</h3><ol>';
+                    for (var i = 0; i < data.length; i++) {
+                        listHtml += '<li>' + data[i] + '</li>';
+                    }
+                    listHtml += '</ol>';
+                    $('#result').html(listHtml);
+                },
+                error: function(error) {
+                    $('#result').html('<p>Error fetching related words.</p>');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
